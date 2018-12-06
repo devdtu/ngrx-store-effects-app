@@ -14,7 +14,7 @@ export class PizzasEffects {
     private pizzaService: fromServices.PizzasService
   ) {}
 
-  // we are bascally listening to load_pizzas event 
+  // we are bascally listening to load_pizzas event
   @Effect() // an effect always dispatch an action
   loadPizzas$ = this.actions$.ofType(pizzaActions.LOAD_PIZZAS).pipe(
     // switchmap because we want return a brand new observable using
@@ -28,6 +28,17 @@ export class PizzasEffects {
             catchError(error => of(new pizzaActions.LoadPizzasFail(error)))
           )
         );
+    })
+  );
+
+  @Effect()
+  createPizza$ = this.actions$.ofType(pizzaActions.CREATE_PIZZA).pipe(
+    map((action: pizzaActions.CreatePizza) => action.payload),
+    switchMap(pizza => {
+      return this.pizzaService.createPizza(pizza).pipe(
+        map(pizza => new pizzaActions.CreatePizzaSuccess(pizza)),
+        catchError(error => of(new pizzaActions.CreatePizzaFail(error)))
+      );
     })
   );
 }
