@@ -23,12 +23,16 @@ export const ROUTES: Routes = [
     path: '',
     component: fromContainers.ProductsComponent,
   },
+  // {
+  //   path: ':id',
+  //   component: fromContainers.ProductItemComponent,
+  // },
   {
-    path: ':id',
+    path: 'new',
     component: fromContainers.ProductItemComponent,
   },
   {
-    path: 'new',
+    path: ':pizzaId',
     component: fromContainers.ProductItemComponent,
   },
 ];
