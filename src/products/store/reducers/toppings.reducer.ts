@@ -15,7 +15,7 @@ export const intitialState: ToppingsState = {
 };
 
 export function reducer(
-  state: ToppingsState,
+  state = intitialState,
   action: fromToppings.ToppingsAction
 ): ToppingsState {
   switch (action.type) {
@@ -28,7 +28,6 @@ export function reducer(
 
     case fromToppings.LOAD_TOPPINGS_SUCCESS: {
       const toppings = action.payload;
-
       const entities = toppings.reduce(
         (entities: { [id: number]: Topping }, topping: Topping) => {
           return {
