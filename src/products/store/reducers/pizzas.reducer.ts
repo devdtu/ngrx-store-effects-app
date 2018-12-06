@@ -65,7 +65,20 @@ export function reducer(
         ...state.entities,
         [pizza.id]: pizza
       };
-      return { 
+      return {
+        ...state,
+        entities
+      };
+    }
+
+    case fromPizzas.REMOVE_PIZZA_SUCCESS: {
+      const pizza = action.payload;
+      // removed will contain the item deleted and the entities will contain all the item with pizza.id
+      const { [pizza.id]: removed, ...entities } = state.entities;
+      // we can the do the following because of the above statement
+      //console.log(removed)
+      //console.log(entities)
+      return {
         ...state,
         entities
       };
