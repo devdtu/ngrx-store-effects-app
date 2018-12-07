@@ -4,15 +4,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import {StoreModule} from '@ngrx/store';
-import {EffectsModule} from '@ngrx/effects'
-import {reducers, effects} from './store'
- 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers, effects } from './store';
+
 // components
 import * as fromComponents from './components';
 
 // containers
 import * as fromContainers from './containers';
+
+//guards
+import * as fromGuards from './guards';
 
 // services
 import * as fromServices from './services';
@@ -21,7 +24,8 @@ import * as fromServices from './services';
 export const ROUTES: Routes = [
   {
     path: '',
-    component: fromContainers.ProductsComponent,
+    canActivate: [fromGuards.PizzasGuard],
+    component: fromContainers.ProductsComponent
   },
   // {
   //   path: ':id',
@@ -29,12 +33,13 @@ export const ROUTES: Routes = [
   // },
   {
     path: 'new',
-    component: fromContainers.ProductItemComponent,
+    canActivate: [fromGuards.PizzasGuard],
+    component: fromContainers.ProductItemComponent
   },
   {
     path: ':pizzaId',
-    component: fromContainers.ProductItemComponent,
-  },
+    component: fromContainers.ProductItemComponent
+  }
 ];
 
 @NgModule({
@@ -46,8 +51,8 @@ export const ROUTES: Routes = [
     StoreModule.forFeature('products', reducers),
     EffectsModule.forFeature(effects)
   ],
-  providers: [...fromServices.services],
+  providers: [...fromServices.services, ...fromGuards.guards],
   declarations: [...fromContainers.containers, ...fromComponents.components],
-  exports: [...fromContainers.containers, ...fromComponents.components],
+  exports: [...fromContainers.containers, ...fromComponents.components]
 })
 export class ProductsModule {}
